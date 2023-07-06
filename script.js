@@ -1,5 +1,4 @@
 const gameContainer = document.getElementById("game");
-const startBtn = document.getElementById("start-btn");
 
 const currentCards = [];
 let pairsMatched = 0;
@@ -49,29 +48,85 @@ function createDivsForColors(colorArray) {
   }
 }
 
-// TODO: Implement this function!
-function handleCardClick(event) {
-  if (currentCards.length === 2) {
-    return;
-  }
-
-  const cardColor = event.target.classList[0];
-  event.target.style.backgroundColor = cardColor;
-  currentCards.push({
-    color: cardColor,
-    element: event.target
-  });
-
+function updateScore() {
   score++;
   const scoreEl = document.getElementById('score');
   scoreEl.innerText = score;
+}
+
+function showCompleted() {
+  const completedEl = document.createElement('section');
+  const spanEl = document.createElement('span');
+  spanEl.innerText = `YOU WIN! Click "Restart" to play again!`;
+  completedEl.appendChild(spanEl);
+
+  const restartBtnEl = document.createElement('button');
+  restartBtnEl.classList.add('restart-btn');
+  restartBtnEl.innerText = 'Restart';
+  completedEl.appendChild(restartBtnEl);
+
+  gameContainer.appendChild(completedEl);
+};
+
+function setBestScore() {
+  const currentBestScore = JSON.parse(localStorage.getItem('bestScore'));
+  if (currentBestScore) {
+    if (score < currentBestScore) {
+      localStorage.setItem('bestScore', JSON.stringify(score));
+    }
+  } else {
+    localStorage.setItem('bestScore', JSON.stringify(score));
+  };
+}
+
+function resetGame() {
+  gameContainer.innerHTML = loadStartPage;
+  score = 0;
+  pairsMatched = 0;
+};
+
+function loadGamePage() {
+  gameContainer.innerHTML = '';
+  shuffledColors = shuffle(COLORS);
+  createDivsForColors(shuffledColors);
+}
+
+function loadStartPage() {
+  const h2 = document.createElement('h2');
+  h2.innerText = `Press "Start" to begin!`;
+  const startBtn = document.createElement('button');
+  startBtn.innerText = 'Start';
+  startBtn.id = 'start-btn';
+
+  gameContainer.appendChild(h2);
+  gameContainer.appendChild(startBtn);
+
+  startBtn.addEventListener('click', loadGamePage);
+}
+
+// TODO: Implement this function!
+function handleCardClick(event) {
+  // make sure no more than 2 cards are in play at the same time
+  if (currentCards.length === 2) return;
+
+  // check if the same card is clicked
+  if (currentCards.length === 1){
+    if (currentCards[0].element === event.target) {
+      return;
+    }
+  };
+
+  const currentCardEl = event.target;
+  const currentCardColor = currentCardEl.classList[0];
+  event.target.style.backgroundColor = currentCardColor;
+  currentCards.push({
+    color: currentCardColor,
+    element: currentCardEl
+  });
+
+  updateScore();
 
   if (currentCards.length === 2) {
-    if (currentCards[0].element === currentCards[1].element) {
-      currentCards.splice(currentCards[1], 1);
-      return;
-    };
-
     if (currentCards[0].color === currentCards[1].color) {
       for (const card of currentCards) {
         card.element.style.pointerEvents = 'none';
@@ -80,38 +135,13 @@ function handleCardClick(event) {
       pairsMatched++; 
       
       if (pairsMatched === 5) {
-        const completedEl = document.createElement('section');
-        const spanEl = document.createElement('span');
-        spanEl.innerText = `YOU FINISHED! Click "Restart" to play again!`;
-        completedEl.appendChild(spanEl);
-
-        const restartBtnEl = document.createElement('button');
-        restartBtnEl.innerText = 'Restart';
-        completedEl.appendChild(restartBtnEl);
-
-        gameContainer.appendChild(completedEl);
-
-        // check score
-        const currentBestScore = JSON.parse(localStorage.getItem('bestScore'));
-        if (currentBestScore) {
-          if (score < currentBestScore) {
-            localStorage.setItem('bestScore', JSON.stringify(score));
-          }
-        } else {
-          localStorage.setItem('bestScore', JSON.stringify(score));
-        };
-
-        restartBtnEl.addEventListener('click', function() {
-          gameContainer.innerHTML = '';
-          score = 0;
-          pairsMatched = 0;
-          shuffledColors = shuffle(COLORS);
-          createDivsForColors(shuffledColors);
-        })
+        showCompleted();
+        setBestScore();
+        const restartBtn = document.querySelector('.restart-btn');
+        restartBtn.addEventListener('click', resetGame);
       }
       return;
-    } else {
-      score++;
+    } else {      
       setTimeout(() => {
         for (const card of currentCards) {
           card.element.style.backgroundColor = 'transparent';
@@ -119,11 +149,8 @@ function handleCardClick(event) {
         currentCards.length = 0;
       }, 1000);
     }
-  };
+  }; 
 }
 
 // when the DOM loads
-startBtn.addEventListener('click', function() {
-  gameContainer.innerHTML = '';
-  createDivsForColors(shuffledColors);
-});
+loadStartPage();
