@@ -40,8 +40,16 @@ function shuffle(array) {
 }
 
 function createDivsForColors(colorArray) {
+  const instructionEl = document.createElement('p');
+  instructionEl.innerText = 'Match all color pairs to win! Lowest score is the best.';
+  instructionEl.id = 'instruction';
+  gameContainer.appendChild(instructionEl);
+
   const scoreEl = document.createElement('section');
-  scoreEl.innerText = score;
+  scoreEl.innerText = `Score`;
+  const scoreNum = document.createElement('bold');
+  scoreNum.innerText = score;
+  scoreEl.appendChild(scoreNum);
   scoreEl.id = 'score';
   gameContainer.appendChild(scoreEl);
 
@@ -49,7 +57,9 @@ function createDivsForColors(colorArray) {
     const newDiv = document.createElement("div");
     newDiv.classList.add('color-div');
     newDiv.dataset.color = color;
+    newDiv.style.backgroundColor = `#FB361767`;
     newDiv.addEventListener("click", handleCardClick);
+
     gameContainer.append(newDiv);
   }
 }
@@ -57,17 +67,22 @@ function createDivsForColors(colorArray) {
 function updateScore() {
   score++;
   const scoreEl = document.getElementById('score');
-  scoreEl.innerText = score;
+  scoreEl.innerText = `Score`;
+  const scoreNum = document.createElement('bold');
+  scoreNum.innerText = score;
+  scoreEl.appendChild(scoreNum);
 }
 
 function showCompleted() {
   const completedEl = document.createElement('section');
   const spanEl = document.createElement('span');
   spanEl.innerText = `YOU WIN! Click "Restart" to play again!`;
+  completedEl.id = 'complete-section';
   completedEl.appendChild(spanEl);
 
   const restartBtnEl = document.createElement('button');
-  restartBtnEl.classList.add('restart-btn');
+  restartBtnEl.classList.add('btn');
+  restartBtnEl.id = 'restart-btn';
   restartBtnEl.innerText = 'Restart';
   completedEl.appendChild(restartBtnEl);
 
@@ -109,17 +124,22 @@ function loadGamePage() {
 }
 
 function loadStartPage() {
+  const h1 = document.createElement('h1');
+  h1.innerText = 'Memory Game!';
+
   const h2 = document.createElement('h2');
+  h2.id = 'start-text';
   h2.innerText = `Press "Start" to begin!`;
   const startBtn = document.createElement('button');
   startBtn.innerText = 'Start';
-  startBtn.id = 'start-btn';
+  startBtn.classList.add('btn');
 
   const currentBestScore = getBestScore();
   const h3 = document.createElement('h3');
   h3.id = 'best-score';
   h3.innerText = `Best Score: ${currentBestScore}`;
 
+  gameContainer.appendChild(h1);
   gameContainer.appendChild(h2);
   gameContainer.appendChild(startBtn);
   gameContainer.appendChild(h3);
@@ -162,14 +182,14 @@ function handleCardClick(event) {
       if (pairsMatched === 5) {
         showCompleted();
         setBestScore();
-        const restartBtn = document.querySelector('.restart-btn');
+        const restartBtn = document.querySelector('#restart-btn');
         restartBtn.addEventListener('click', resetGame);
       }
       return;
     } else {      
       setTimeout(() => {
         for (const card of currentCards) {
-          card.element.style.backgroundColor = 'transparent';
+          card.element.style.backgroundColor = `#FB361767`;
         }
         currentCards.length = 0;
       }, 1000);

@@ -1,7 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Hairline&family=Bungee+Shade&family=Monoton&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --red: #FB3617;
+  --orange: #FC945C;
+  --tan: #F6C48E;
+  --lighttan: #F6C48E10;
+  --teal: #108698;
+  --blue: #042054;
+}
+
+body {
+  text-align: center;
+  background-color: var(--lighttan);
+}
+
+h1 {
+  font-family: 'Monoton', cursive;
+  font-size: 8rem;
+  color: var(--teal);
+  letter-spacing: 0.5rem;
+  margin: 7rem 5rem 5rem 5rem;
+}
+
+#start-text {
+  font-family: 'Bungee Shade', cursive;
+  font-size: 2.5rem;
+  color: var(--red);
+  margin-bottom: 3rem;
+}
+
+.btn {
+  font-family: 'Bungee', cursive;
+  font-size: 2rem;
+  padding: 1rem 2rem;
+  border: none;
+  background-color: var(--orange);
+  color: white;
+  border-radius: 1.3rem;
+  transition: all 0.5s ease;
+}
+
+.btn:hover {
+  background-color: var(--blue);
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+#best-score {
+  margin-top: 5rem;
+  font-family: 'Bungee', cursive;
+  font-size: 1.2rem;
+  letter-spacing: 0.2rem;
+  color: var(--blue);
+}
+
+#score {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 0 3rem 0;
+  font-family: 'Bungee', cursive;
+  font-size: 2rem;  
+  color: var(--blue);
+}
+
+#score bold {
+  font-family: 'Bungee Shade', cursive;  
+  font-size: 4rem;
+  color: var(--blue);
+}
+
+#instruction {
+  font-family: 'Bungee', cursive;
+  margin: 6rem 0 3rem 0;
+}
+
 #game div {
-  border: 1px solid black;
+  border: 2px solid var(--teal);
+  border-radius: 20px;
   width: 15%;
   height: 200px;
-  margin: 10px;
+  margin: 20px;
   display: inline-block;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+#game div:hover {
+  transform: scale(1.03);
+  cursor: pointer;
+}
+
+#complete-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Bungee', cursive;
+  font-size: 1.2rem; 
+  margin-top: 2rem;
+}
+
+#complete-section button {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+.restart-btn {
+  margin: 1rem;
+}
+
+@media screen and (max-width: 480px) {
+  h1 {
+    margin: 25rem 5rem 10rem 5rem;
+  }
 }
