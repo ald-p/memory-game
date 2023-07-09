@@ -46,7 +46,7 @@ h1 {
 }
 
 .btn:hover {
-  background-color: var(--blue);
+  background-color: var(--teal);
   cursor: pointer;
   transform: scale(1.1);
 }
